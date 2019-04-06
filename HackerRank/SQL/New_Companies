@@ -1,0 +1,27 @@
+-- 类型： 多表连接，去重统计
+-- 难度： 中
+
+select
+    company_code,
+    founder,
+    count(distinct lead_manager_code),
+    count(distinct senior_manager_code),
+    count(distinct manager_code),
+    count(distinct employee_code)
+
+from
+
+(select distinct        -- 这个distinct可能可以去掉
+ 
+    c.company_code,
+    c.founder,
+    lm.lead_manager_code,
+    sm.senior_manager_code,
+    m.manager_code,
+    e.employee_code
+from Company c 
+left join Lead_Manager lm on c.company_code = lm.company_code
+left join Senior_Manager sm on lm.company_code = sm.company_code and lm.lead_manager_code = sm.lead_manager_code
+left join Manager m on sm.company_code = m.company_code and sm.lead_manager_code = m.lead_manager_code and sm.senior_manager_code = m.senior_manager_code
+left join Employee e on m.company_code = e.company_code and m.lead_manager_code = e.lead_manager_code and m.senior_manager_code = e.senior_manager_code and m.manager_code = e.manager_code) t2
+group by company_code, founder

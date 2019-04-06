@@ -1,0 +1,24 @@
+-- 类型： 统计并转置显示
+-- 难度： 中
+
+方法： 先把将每一个职业所对应的人的序号统计出来，再group by序号即可
+注意： 统计序号是要排序，题目要求的是列要字典序显示
+
+set @d = 0, @p = 0, @s = 0, @a = 0;
+
+select
+min(Doctor), min(Professor), min(Singer), min(Actor)
+from 
+(select 
+    case
+        when Occupation = 'Doctor' then @d:=@d+1
+        when Occupation = 'Professor' then @p:=@p+1
+        when Occupation = 'Singer' then @s:=@s+1
+        when Occupation = 'Actor' then @a:=@a+1
+    end as rowNumber,
+    case when Occupation = 'Doctor' then Name else NULL end as Doctor,
+    case when Occupation = 'Professor' then Name else NULL end as Professor,    
+    case when Occupation = 'Singer' then Name else NULL end as Singer,    
+    case when Occupation = 'Actor' then Name else NULL end as Actor
+from Occupations order by Name) t2
+group by rowNumber
