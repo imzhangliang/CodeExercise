@@ -1,0 +1,7 @@
+-- 类型： 类型转换和字符串替换
+-- 难度： 容易
+
+注意： mysql的cast和sql server的cast有一些不一样，详见https://www.w3schools.com/sql/func_mysql_cast.asp
+
+
+select ceil(avg(salary) - avg(cast(replace(cast(salary as char), '0', '') as signed))) from EMPLOYEES
