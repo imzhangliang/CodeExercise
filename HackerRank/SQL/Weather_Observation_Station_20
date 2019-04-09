@@ -1,0 +1,9 @@
+-- 类型： 中位数，子查询
+-- 难度： 中
+
+select
+    round(LAT_N, 4)
+from STATION s
+where 
+(select count(*) from STATION where LAT_N < s.LAT_N) 
+= (select count(*) from STATION where LAT_N > s.LAT_N)
